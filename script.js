@@ -44,7 +44,9 @@ function createRow(id) {
         startCell.appendChild(startHoursInput);
 
         // colon separator
-        startCell.appendChild(document.createTextNode(":"));
+        const startSpan = document.createElement("span")
+        startSpan.appendChild(document.createTextNode(":"))
+        startCell.appendChild(startSpan)
 
         //minuts
         const startMinutesInput = document.createElement("input");
@@ -107,7 +109,9 @@ function createRow(id) {
         endCell.appendChild(endHoursInput);
 
         // colon separator
-        endCell.appendChild(document.createTextNode(":"));
+        const endSpan = document.createElement("span")
+        endSpan.appendChild(document.createTextNode(":"))
+        endCell.appendChild(endSpan)
 
         //minuts
         const endMinutesInput = document.createElement("input");
