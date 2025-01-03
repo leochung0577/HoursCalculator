@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js"></script>
+    <title>Hours Calclator</title>
+</head>
+<body>
+    <h1>Hours Calclator</h1>
+    <div class="input">
+        Number of rows: <input type="number" value="1" min="1" id="rowCount"> 
+        <button onclick="updateRows()">Update</button>
+        <button onclick="clearTable()">Clear Table</button>
+    </div>
+    <div class="container">
+        <table border=1 id="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Start</th>
+                    <th>AM/PM</th>
+                    <th>End</th>
+                    <th>AM/PM</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- onload function will fill this -->
+            </tbody>
+        </table>
+    </div>
+    <div class="outputContainer">
+        <button onclick="sum()"> Get total sum</button>
+        <p id="totalSum"></p>
+    </div>
+</body>
+</html>
