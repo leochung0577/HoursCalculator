@@ -23,6 +23,7 @@
                     <th>AM/PM</th>
                     <th>End</th>
                     <th>AM/PM</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,7 +33,11 @@
     </div>
     <div class="outputContainer">
         <button onclick="sum()"> Get total sum</button>
-        <p id="totalSum"></p>
+        <span id="totalSum">Total: 0 hours 0 minutes</span>
+        <select id="timeFormat" onchange="sum()">
+            <option value="hoursMinutes">Hours & Minutes</option>
+            <option value="hours">Hours</option>
+        </select>
     </div>
 </body>
 </html>

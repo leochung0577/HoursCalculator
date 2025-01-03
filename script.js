@@ -152,6 +152,35 @@ function createRow(id) {
     endAMPMCell.appendChild(endAMPMSelect);
     row.appendChild(endAMPMCell);
 
+    // action cell
+    const actionCell = document.createElement("td");
+
+        // clear button cell
+        const clearButton = document.createElement("button");
+        clearButton.textContent = "Clear";
+        clearButton.classList.add("clear-btn");
+        clearButton.addEventListener("click", () => {
+            // clear the contents of the row's input fields
+            row.querySelectorAll("input").forEach(input => {
+                input.value = ""; // Reset each input's value to an empty string
+            });
+            row.querySelectorAll("select").forEach(select => {
+                select.selectedIndex = 0; // Reset each select dropdown to its first option
+            });
+        });
+        actionCell.appendChild(clearButton);
+
+        // remove button
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
+        removeButton.classList.add("remove-btn");
+        removeButton.addEventListener("click", () => {
+            row.remove();  // Remove the row when the button is clicked
+        });
+        actionCell.appendChild(removeButton);
+
+    row.appendChild(actionCell);
+
     tbody.appendChild(row);
 }
 
@@ -216,6 +245,12 @@ function sum() {
     const totalHours = Math.floor(totalSum / 60);
     const totalMinutes = totalSum - Math.floor(totalSum / 60) * 60
 
-    // Display the total sum in the output section
-    document.getElementById('totalSum').textContent = "Total: " + totalHours + " hours " + totalMinutes + " minutes";
+    // Get the selected format
+    const timeFormat = document.getElementById('timeFormat').value;
+
+    if (timeFormat === "hours") {
+        document.getElementById('totalSum').textContent = "Total: " + (totalHours + totalMinutes / 60).toFixed(2) + " hours";
+    } else {
+        document.getElementById('totalSum').textContent = "Total: " + totalHours + " hours " + totalMinutes + " minutes";
+    }
 }
