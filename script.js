@@ -1,3 +1,15 @@
+window.onload = function() {
+    const rowCount = document.getElementById("rowCount")
+    rowCount.addEventListener("input", (e) => {
+        const value = e.target.value
+                if(value.includes('.'))
+                    rowCount.value = Math.floor(value)
+                else if (value !== "" && value < 1)
+                    rowCount.value = 1
+    });
+    updateRows();
+}
+
 function createRow(id) {
     const tbody = document.querySelector("#table tbody");
     const row = document.createElement("tr");
@@ -16,6 +28,19 @@ function createRow(id) {
         //hours Input
         const startHoursInput = document.createElement("input");
         startHoursInput.type = "number";
+        startHoursInput.min = 0;
+        startHoursInput.max = 12;
+        startHoursInput.addEventListener("input", (e) => {
+            const value = e.target.value
+            if(value.includes('.'))
+                startHoursInput.value = Math.floor(value)
+            else if(value.length > 2)
+                startHoursInput.value = Math.floor(value/10)
+            else if (value < 0)
+                startHoursInput.value = 0
+            else if (value > 12)
+                startHoursInput.value = 12
+        });
         startCell.appendChild(startHoursInput);
 
         // colon separator
@@ -24,6 +49,19 @@ function createRow(id) {
         //minuts
         const startMinutesInput = document.createElement("input");
         startMinutesInput.type = "number";
+        startMinutesInput.min = 0;
+        startMinutesInput.max = 59;
+        startMinutesInput.addEventListener("input", (e) => {
+            const value = e.target.value
+            if(value.includes('.'))
+                startMinutesInput.value = Math.floor(value)
+            else if(value.length > 2)
+                startMinutesInput.value = Math.floor(value/10)
+            else if (value < 0)
+                startMinutesInput.value = 0
+            else if (value > 59)
+                startMinutesInput.value = 59
+        });
         startCell.appendChild(startMinutesInput);
 
     row.appendChild(startCell);
@@ -53,6 +91,19 @@ function createRow(id) {
         //hours Input
         const endHoursInput = document.createElement("input");
         endHoursInput.type = "number";
+        endHoursInput.min = 0;
+        endHoursInput.max = 12;
+        endHoursInput.addEventListener("input", (e) => {
+            const value = e.target.value
+            if(value.includes('.'))
+                endHoursInput.value = Math.floor(value)
+            else if(value.length > 2)
+                endHoursInput.value = Math.floor(value/10)
+            else if (value < 0)
+                endHoursInput.value = 0
+            else if (value > 12)
+                endHoursInput.value = 12
+        });
         endCell.appendChild(endHoursInput);
 
         // colon separator
@@ -61,6 +112,19 @@ function createRow(id) {
         //minuts
         const endMinutesInput = document.createElement("input");
         endMinutesInput.type = "number";
+        endMinutesInput.min = 0;
+        endMinutesInput.max = 59;
+        endMinutesInput.addEventListener("input", (e) => {
+            const value = e.target.value
+            if(value.includes('.'))
+                endMinutesInput.value = Math.floor(value)
+            else if(value.length > 2)
+                endMinutesInput.value = Math.floor(value/10)
+            else if (value < 0)
+                endMinutesInput.value = 0
+            else if (value > 59)
+                endMinutesInput.value = 59
+        });
         endCell.appendChild(endMinutesInput);
 
     row.appendChild(endCell);
@@ -123,32 +187,31 @@ function sum() {
     // Loop through all rows to calculate the total sum
     for (let i = 0; i < tableBody.rows.length; i++) {
         const row = tableBody.rows[i];
-        const startHoursValue = parseInt(row.cells[1].getElementsByTagName('input')[0].value);
-        const startMinutesValue = parseInt(row.cells[1].getElementsByTagName('input')[1].value);
-        const endHoursValue = parseInt(row.cells[3].getElementsByTagName('input')[0].value);
-        const endMinutesValue = parseInt(row.cells[3].getElementsByTagName('input')[1].value);
+        const startHoursValue = parseInt(row.cells[1].getElementsByTagName('input')[0].value) || 0;
+        const startHours = startHoursValue == 12 ? 0 : startHoursValue;
+        const startMinutes = parseInt(row.cells[1].getElementsByTagName('input')[1].value) || 0;
+        const endHoursValue = parseInt(row.cells[3].getElementsByTagName('input')[0].value) || 0;
+        const endHours = endHoursValue == 12 ? 0 : endHoursValue;
+        const endMinutes = parseInt(row.cells[3].getElementsByTagName('input')[1].value) || 0;
 
-        const startHours = !startHoursValue ? 0 : startHoursValue;
-        const startMinutes = !startMinutesValue ? 0 : startMinutesValue;
-        const endHours = !endHoursValue ? 0 : endHoursValue;
-        const endMinutes = !endMinutesValue ? 0 : endMinutesValue;
+        const meridiem = row.cells[2].getElementsByTagName('select')[0].value === row.cells[4].getElementsByTagName('select')[0].value ? 0 : 12;
 
         // Convert times to total minutes
         const startTimeInMinutes = startHours * 60 + startMinutes;
-        const endTimeInMinutes = endHours * 60 + endMinutes;
+        const endTimeInMinutes = endHours * 60 + endMinutes + meridiem * 60;
 
         // Calculate difference in minutes and convert to hours
-        const timeDifferenceInMinutes = endTimeInMinutes - startTimeInMinutes;
+        let timeDifferenceInMinutes = endTimeInMinutes - startTimeInMinutes;
+
+        if(timeDifferenceInMinutes < 0)
+            timeDifferenceInMinutes = 24 * 60 + timeDifferenceInMinutes;
+
         totalSum += timeDifferenceInMinutes;  // Convert to hours
     }
 
-    totalHours = totalSum % 60;
-    totalMinutes = totalSum - (totalSum % 60) * 60
+    const totalHours = Math.floor(totalSum / 60);
+    const totalMinutes = totalSum - Math.floor(totalSum / 60) * 60
 
     // Display the total sum in the output section
     document.getElementById('totalSum').textContent = "Total: " + totalHours + " hours " + totalMinutes + " minutes";
-}
-
-window.onload = function() {
-    updateRows();
 }
